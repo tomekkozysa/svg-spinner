@@ -69,7 +69,7 @@ export default {
   filters: {
     num: function (value) {
       if(value < 1 ){
-      return parseFloat(value).toFixed(2)  
+      return parseInt(value).toFixed(2)  
       }
       return parseInt(value)
     },
