@@ -2,7 +2,7 @@
   <div class="container">
     <Projector ref="projector"
       :width=200 :height=200 
-      :count="count | num " :radius="radius | num " :time="time | num " :r="r | num " :dotspeed=".1 | num"/>
+      :count="count | num " :radius="radius | num " :time="time" :r="r | num " :dotspeed=".1 "/>
 
 
 
@@ -116,7 +116,7 @@ export default {
   --d-ico-closex:url('data:image/svg+xml;utf8,<svg width="200px" height="200px" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="91" r="3" fill="red" /></svg>');
 }
 #projector{
-  display:none;
+  /* display:none; */
 }
 .preview{
   

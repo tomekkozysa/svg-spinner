@@ -1,8 +1,20 @@
 <template>
 <svg :width="width+'px'" :height="height+'px'" ref="svg" xmlns="http://www.w3.org/2000/svg" id="projector">
     <g>
-           <Segment :r="r" :cx="d.cx" :cy="d.cy" 
-        v-for="d in cells" :key="d.id" :fill="getColor(d.id)">
+           <SegmentLine :size="r" :x1="d.x1" :y1="d.y1" :x2="d.x2" :y2="d.y2" 
+            v-for="d in stripes" :key="d.id" :colour="getColour(d.id)">
+
+        <animate v-if="animate" :dur="time*1000+'ms'" repeatCount="indefinite" attributeName="stroke"
+            :values="colorsequence" 
+            calcMode="splines" 
+            :begin="time*1000/count*d.id+'ms'" 
+        />
+     
+        </SegmentLine>
+
+    
+           <!-- <Segment :r="r" :cx="d.cx" :cy="d.cy" 
+        v-for="d in cells" :key="d.id" :fill="getColour(d.id)">
 
         <animate v-if="animate" :dur="time*1000+'ms'" repeatCount="indefinite" attributeName="fill"
             :values="colorsequence" 
@@ -12,28 +24,17 @@
      
         </Segment>
 
-     <!-- <rect x="20" y="20" width="100" height="100" /> -->
-    <!--
-        'projector.compositionupdate+'
-    -->
-      <!-- <animateTransform
-       attributeName="transform"
-       begin="0s"
-       :dur="time+'s'"
-       type="rotate"
-       :from="'0 '+center.x+' '+center.y"
-       :to="'360 '+center.x+' '+center.y"
-       repeatCount="indefinite" 
-			/>  -->
-
+     -->
             
     </g>
 </svg>
 </template>
 <script>
 import Segment from '~/components/Segment.vue'
+import SegmentLine from '~/components/SegmentLine.vue'
 export default {
     components:{
+        SegmentLine,
         Segment,
     },
     data(){
@@ -82,6 +83,26 @@ export default {
                 data.push(d);
              }
              return data;
+        },
+        stripes:function(){
+            let d={};
+            let data = [];
+            for( let i=0;i<this.count;i++){
+                let pc = this.polarToCartesian(this.center.x,this.center.y,this.radius,i*this.anglestep); 
+                let pc_end = this.polarToCartesian(this.center.x,this.center.y,this.radius-(this.radius/2),i*this.anglestep); 
+                
+                d = { 
+                    id:i,
+                    x1:parseFloat(pc.x).toFixed(2),
+                    y1:parseFloat(pc.y).toFixed(2),
+                    x2:parseFloat(pc_end.x).toFixed(2),
+                    y2:parseFloat(pc_end.y).toFixed(2)
+                    // cx:parseInt(pc.x),
+                    // cy:parseInt(pc.y)
+                }
+                data.push(d);
+             }
+             return data;
         }
     },
 
@@ -95,7 +116,7 @@ export default {
         shout:function(){
 
         },
-        getColor:function(id){
+        getColour:function(id){
             let timesover = Math.floor(id / this.colors.length);
             return this.colors[id - this.colors.length*timesover];
         },
