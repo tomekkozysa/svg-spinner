@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Projector ref="projector"
+    <Projector ref="projector" class="projector"
       :width=200 :height=200 
       :count="count | num " :radius="radius | num " :time="time" :r="r | num " :dotspeed=".1 "/>
 
@@ -115,8 +115,8 @@ export default {
   --d-ico-closex:url('data:image/svg+xml;utf8,<svg width="50px" height="50px" xmlns="http://www.w3.org/2000/svg"><g><g transform="scale(.5, 25, 25)"><line x1="0" y1="0" x2="50" y2="50" stroke="black" stroke-width="1" /><line x1="0" y1="50" x2="50" y2="0" stroke="black" stroke-width="1" /></g></g></svg>');
   --d-ico-closex:url('data:image/svg+xml;utf8,<svg width="200px" height="200px" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="91" r="3" fill="red" /></svg>');
 }
-#projector{
-  /* display:none; */
+.projector{
+  display:none;
 }
 .preview{
   
