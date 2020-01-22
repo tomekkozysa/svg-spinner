@@ -8,12 +8,9 @@
       
         <div class="dragbar-head">
             <div class="dragbar-trackbar-dot" :style="headmove"></div>
-            <div class="dragbar-trackbar-wrapper">
-                
-                <div class="dragbar-trackbar" :style="headmove">
-                    
-            </div>
-            </div>
+            <div class="dragbar-trackbar-wrapper">                
+                <div class="dragbar-trackbar" :style="headmove"></div>
+                <div class="dragbar-trackbar-track"></div>
         </div>
 
         <small v-if="debug">
@@ -23,6 +20,7 @@
        
 
     </div>
+    </div>
 </template>
 <script>
 /*
@@ -30,6 +28,8 @@
 
 
 */
+
+
 
 export default {
     name:'Dragbar',
@@ -67,7 +67,7 @@ export default {
             return (this.rangein.max - this.rangein.min) /( this.rangeout.max - this.rangeout.min)
         },
         percentage:function(){
-            return ( this.value  - this.rangeout.min )  * 100 / (this.rangeout.max) ;
+            return ( this.value  - this.rangeout.min )  * 100 / (this.rangeout.max - this.rangeout.min) ;
         },
         step_count:function(){
 
@@ -87,6 +87,11 @@ export default {
     },
     mounted:function(){
             this.$refs.drag.addEventListener('mousedown',this.mousedown);         
+    },
+    watch:{
+        default:function(val){
+            this.value=val;
+        }
     },
     methods:{
         range:function(value){
@@ -159,7 +164,9 @@ export default {
 
     --tb-dot-bgr:black;
     --tb-dot-size:5px;
+    
 
+    --tb-track-bgr:#fff;
     
 
     
@@ -170,6 +177,9 @@ export default {
     text-align:left;
     position: relative;    
     cursor:ew-resize;
+}
+.dragbar:hover{
+    --tb-dot-size:10px;
 }
 .dragbar.debug{
         --min-height:120px;
@@ -223,12 +233,23 @@ small{
     display: flex;
     align-content: center;
     align-items: center;
+     top:calc(50% - calc(var(--tb-height) / 2));
 
 }
 .dragbar-trackbar{
     height:var(--tb-height);
     width:100%;
     background:var(--tb-bgr);
+    top:0;
+    left:0;
+    z-index: 1;
+    position: absolute;
+}
+.dragbar-trackbar-track{
+    position: absolute;
+    height:var(--tb-height);
+    width:100%;
+    background:var(--tb-track-bgr);
     top:0;
     left:0;
     z-index: 0;
@@ -238,6 +259,7 @@ small{
     
     height:var(--tb-dot-size);
     width:var(--tb-dot-size);
+    transition: all .1s;
     border-radius:999em;
     background:var(--tb-dot-bgr);
     position:absolute;
@@ -247,4 +269,5 @@ small{
     
 
 }
+
 </style>

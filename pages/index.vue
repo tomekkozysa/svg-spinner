@@ -7,10 +7,7 @@
       :time="time | num" 
       :r="r | num " 
       :thickness="thickness | num " 
-      :dotspeed=".1 "/>
-
-
-    
+      :dotspeed=".1 "/>   
 
 
 
@@ -26,20 +23,28 @@
      <div>
        <div class="ui">
       <Dragbar :rangeout="{min:2,max:24}" :step="1"  :decimals="0" :default="7" label="Number of elements" @update="updateHandler($event,'count');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:3,max:48}" :step="1"  :decimals="0" :default="48" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:0.1,max:25}" :step=".1" :decimals="0"  :default="1" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
+      <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="48" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
+      <Dragbar :rangeout="{min:0.1,max:48}" :step=".1" :decimals="0"  :default="1" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
       <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="1" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:0.1,max:5}" :step=".1" :decimals="2"  :default="1" label="Transition Time " @update="updateSpeed" class="ui-bar" />
+      <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="1" label="Transition Time " @update="updateSpeed" class="ui-bar" />
     </div>
 
     <div class="ui-secondary">
-      <textarea class="code" ref="csscode">
-          --svgicon: url('{{svgcode}}');
-      </textarea>
-      <button @click="copyCSS" class="action-default">Copy CSS</button>
-      <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default">fullscreenmode</button>
+      
+     
+        <button @click="copyCSS" class="action-default">Copy CSS</button>
+        <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default">Hit me!</button>
+      </div>
+
+       <div class="svg-bytes-value" >~{{svgcode | bytes}}</div>
+
     </div>
-    </div>
+
+    
+    <textarea class="code" ref="csscode">
+--svgicon: url('{{svgcode}}');
+    </textarea>
+
     </div>
 </template>
 
@@ -62,6 +67,13 @@ export default {
       console.log('num::',value)
       return parseInt(value);
     },
+      bytes:function(val){
+        // https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string
+      return (encodeURI(val).split(/%..|./).length - 1)/1000+'kb';
+
+      },
+   
+    
 },
   data(){
     return{
@@ -131,37 +143,42 @@ body{
  /* --svgicon:''; */
   background: var(--d-preview-bgr);
 }
+.svg-bytes-value{
+  margin-top:20px;
+}
 .code{
-  font-size:9px;
+  font-size:11px;
+  opacity: .8;
+  font-family:monospace;
   /* white-space: nowrap; */
   /* padding:20px; */
   /* max-width:300px; */
-  margin:0 auto;
-  text-overflow: ellipsis;
-  font-family: inherit;
-  max-width:200px;
-  height:auto;
-
-  background:transparent;
+  margin:4em auto;
+  
+  width:90%;
+  height:300px;
+  overflow: hidden;
 
   display: block;
   outline:none;
   border:0px;
-  display: none;
+  padding:1em;
+  background: transparent;
+  /* display: none; */
 }
 .ui{
   margin:0 auto;
-  width:200px;
+  width:220px;
 }
 
 .ui-bar{
   margin-top:20px;
-  /* padding:5px; */
+  /* padding:10px; */
   transition: background .3s;
 }
-.ui-bar:hover{
+/* .ui-bar:hover{
   background:#eee;
-}
+} */
 
 .ui-secondary{
   margin-top:4em;
@@ -209,7 +226,13 @@ input[type="range"]{
   font-size:16px;
   padding:.5em 1em;
   cursor:pointer;
-
+/* transition: background .3s; */
+/* background: transparent var(--d-preview-bgr) no-repeat center; */
 }
-
+.action-default:hover{
+   /* background: white; */
+   background:var(--d-preview-bgr) no-repeat center;
+   background-size:100px;
+   color:rgba(0,0,0,0)
+}
 </style>
