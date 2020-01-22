@@ -22,11 +22,11 @@
     
      <div>
        <div class="ui">
-      <Dragbar :rangeout="{min:2,max:24}" :step="1"  :decimals="0" :default="7" label="Number of elements" @update="updateHandler($event,'count');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="48" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:0.1,max:48}" :step=".1" :decimals="0"  :default="1" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="1" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="1" label="Transition Time " @update="updateSpeed" class="ui-bar" />
+      <Dragbar :rangeout="{min:2,max:24}" :step="1"  :decimals="0" :default="count" label="Number of elements" @update="updateHandler($event,'count');" class="ui-bar"/>
+      <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="radius" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
+      <Dragbar :rangeout="{min:0.1,max:48}" :step=".1" :decimals="0"  :default="r" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
+      <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="thickness" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
+      <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="time" label="Transition Time " @update="updateSpeed" class="ui-bar" />
     </div>
 
     <div class="ui-secondary">
@@ -34,6 +34,7 @@
      
         <button @click="copyCSS" class="action-default">Copy CSS</button>
         <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default">Hit me!</button>
+        <button @click="lucky" class="action-default">Feeling lucky!</button>
       </div>
 
        <div class="svg-bytes-value" >~{{svgcode | bytes}}</div>
@@ -41,7 +42,7 @@
     </div>
 
     
-    <textarea class="code" ref="csscode">
+    <textarea class="code" ref="csscode">background: var(--svgicon);
 --svgicon: url('{{svgcode}}');
     </textarea>
 
@@ -81,7 +82,7 @@ export default {
       radius:9,
       r:3,
       thickness:2,
-      time:1,
+      time:.25,
       dotspeed:.25,
       svgcode:'',
       images:'',
@@ -98,6 +99,15 @@ export default {
   },
   computed:{},
   methods:{
+    lucky:function(){
+      
+        this.count = 1+Math.random()*23;
+        this.radius = Math.random()*48 - Math.random()*48;
+        this.r = Math.random()*36;
+        this.thickness = Math.random()*25;
+        this.time = Math.random()*1 + Math.random()*5;
+        this.dotspeed = Math.random()*10/10;
+    },
     updateHandler(value,type){
       this[type] = value;
       this.updatePreview();

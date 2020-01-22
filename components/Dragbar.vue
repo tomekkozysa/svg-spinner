@@ -90,10 +90,14 @@ export default {
     },
     watch:{
         default:function(val){
+            if(this.is_mousedown){
+                return;
+            }
             this.value=val;
         }
     },
     methods:{
+        
         range:function(value){
             let newvalue  = (value - this.rangein.min) * (this.rangeout.max - this.rangeout.min) / (this.rangein.max - this.rangein.min) + this.rangeout.min;
             
@@ -244,6 +248,7 @@ small{
     left:0;
     z-index: 1;
     position: absolute;
+    transition: all .2s;
 }
 .dragbar-trackbar-track{
     position: absolute;
@@ -259,7 +264,7 @@ small{
     
     height:var(--tb-dot-size);
     width:var(--tb-dot-size);
-    transition: all .1s;
+    transition: all .2s;
     border-radius:999em;
     background:var(--tb-dot-bgr);
     position:absolute;
