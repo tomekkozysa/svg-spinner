@@ -1,7 +1,7 @@
 <template>
 <svg :width="width+'px'" :height="height+'px'" ref="svg" xmlns="http://www.w3.org/2000/svg" id="projector">
     <g>
-           <SegmentLine :size="r" :x1="d.x1" :y1="d.y1" :x2="d.x2" :y2="d.y2" 
+           <SegmentLine :size="thickness" :x1="d.x1" :y1="d.y1" :x2="d.x2" :y2="d.y2" 
             v-for="d in stripes" :key="d.id" :colour="getColour(d.id)">
 
         <animate v-if="animate" :dur="time*1000+'ms'" repeatCount="indefinite" attributeName="stroke"
@@ -57,6 +57,7 @@ export default {
         radius:Number,
         time:Number,
         r:Number,
+        thickness:Number,
         dotspeed:Number,
     },
     mounted(){},
@@ -89,7 +90,7 @@ export default {
             let data = [];
             for( let i=0;i<this.count;i++){
                 let pc = this.polarToCartesian(this.center.x,this.center.y,this.radius,i*this.anglestep); 
-                let pc_end = this.polarToCartesian(this.center.x,this.center.y,this.radius-(this.radius/2),i*this.anglestep); 
+                let pc_end = this.polarToCartesian(this.center.x,this.center.y,this.radius-this.r,i*this.anglestep); 
                 
                 d = { 
                     id:i,
