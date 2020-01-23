@@ -53,12 +53,12 @@ export default {
     props:{
         width:Number,
         height:Number,        
-        count:Number,
-        radius:Number,
-        time:Number,
-        r:Number,
-        thickness:Number,
-        dotspeed:Number,
+        count:null,
+        radius:null,
+        time: null,
+        r:null,
+        thickness:null,
+        dotspeed:null,
     },
     mounted(){},
     computed:{

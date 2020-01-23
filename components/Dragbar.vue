@@ -89,12 +89,19 @@ export default {
             this.$refs.drag.addEventListener('mousedown',this.mousedown);         
     },
     watch:{
-        default:function(val){
-            if(this.is_mousedown){
-                return;
-            }
-            this.value=val;
-        }
+        // default:function(val){
+        //     if(this.is_mousedown || this.value==val){
+        //         return;
+        //     }
+        //     else{
+        //         this.value=val;
+        //         setTimeout(()=>{
+        //             this.$emit('update',this.precision);
+        //         },100)
+
+        //     }
+            
+        // }
     },
     methods:{
         
@@ -122,7 +129,7 @@ export default {
 
             // this.value = parseFloat(this.value).toFixed(this.decimals);
             this.$emit('update',this.precision);
-            console.log('update',this.precision);
+            // console.log('update',this.precision);
             
         },
         mousemove: function(ev){
@@ -163,10 +170,10 @@ export default {
     --width:200px;
     --min-height:20px;
 
-    --tb-bgr:black;
+    --tb-bgr:#999;
     --tb-height:1px;
 
-    --tb-dot-bgr:black;
+    --tb-dot-bgr:#999;
     --tb-dot-size:5px;
     
 
@@ -183,7 +190,9 @@ export default {
     cursor:ew-resize;
 }
 .dragbar:hover{
-    --tb-dot-size:10px;
+    --tb-dot-size:9px;
+    --tb-bgr:black;
+    --tb-dot-bgr:black;
 }
 .dragbar.debug{
         --min-height:120px;
@@ -248,7 +257,7 @@ small{
     left:0;
     z-index: 1;
     position: absolute;
-    transition: all .2s;
+    /* transition: all .1s; */
 }
 .dragbar-trackbar-track{
     position: absolute;
@@ -264,7 +273,7 @@ small{
     
     height:var(--tb-dot-size);
     width:var(--tb-dot-size);
-    transition: all .2s;
+    transition: width .1s, height .1s;
     border-radius:999em;
     background:var(--tb-dot-bgr);
     position:absolute;

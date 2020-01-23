@@ -16,7 +16,7 @@ export default {
         x2:String,
         y2:String,
         colour:String,
-        size:Number,
+        size:null,
     }
     
 

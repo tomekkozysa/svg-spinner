@@ -1,6 +1,8 @@
 <template>
   <div class="container" :class="{fullscreenmode:fullscreenmode}">
+
     <Projector ref="projector" class="projector"
+      
       :width=200 :height=200 
       :count="count | num " 
       :radius="radius | num " 
@@ -9,38 +11,49 @@
       :thickness="thickness | num " 
       :dotspeed=".1 "/>   
 
+    <!-- 
+    
+      this image uses svg code to display the spinner. 
+      I decided to use image as it refreshes the changes quickly.
+      Maniuplating SVG directly was too slow and was getting confused when maniuplating parameters.
+      CSS var should have about same refresh time as image.
 
+
+    -->
 
     <img ref="previewImg" :src="svgcode" class="image-preview"/>
-    <!-- <img v-for="img in images" ref="previewImg" :src="img.svgcode" /> -->
 
     <!-- <p>Here's a div with CSS variable used in background</p> -->
-    <div class="preview" ref="preview">
-      
-    </div>
+    <div class="preview" ref="preview"></div>
 
     
-     <div>
-       <div class="ui">
-      <Dragbar :rangeout="{min:2,max:24}" :step="1"  :decimals="0" :default="count" label="Number of elements" @update="updateHandler($event,'count');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="radius" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:0.1,max:48}" :step=".1" :decimals="0"  :default="r" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="thickness" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
-      <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="time" label="Transition Time " @update="updateSpeed" class="ui-bar" />
-    </div>
-
-    <div class="ui-secondary">
-      
-     
-        <button @click="copyCSS" class="action-default">Copy CSS</button>
-        <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default">Hit me!</button>
-        <button @click="lucky" class="action-default">Feeling lucky!</button>
+    <div class="ui-wrapper">       
+      <div class="ui">
+        <div class="ui-primary">
+          <Dragbar :rangeout="{min:1,max:24}" :step="1"  :decimals="0" :default="7" label="Number of elements" @update="updateHandler($event,'count');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="9" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:0.1,max:100}" :step=".1" :decimals="0"  :default="3" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="2" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="2.25" label="Transition Time " @update="updateSpeed" class="ui-bar" />
+        </div>
+        <div class="ui-secondary">
+          <button @click="copyCSS" class="action-default">Copy CSS</button>
+          <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default" :class="{hold:fullscreenmode}">Hit me!</button>
+          <!-- <button @click="lucky" class="action-default">Feeling lucky!</button> -->
+        </div>
       </div>
-
-       <div class="svg-bytes-value" >~{{svgcode | bytes}}</div>
-
+      <div class="svg-bytes-value" >~{{svgcode | bytes}}</div>
     </div>
 
+    <div class="about-the-project">
+      <p>Rainbow Spinner, is a side project that explores SVG as a self contained animation format. </p>
+      <p>As SVG allows easy access to animation parameters for customisation, a CSS variable is an easy copy&amp;paste way to add a spinner to your project.</p>      
+      <p>You can find me on <a href="https://twitter.com/tokya">twitter</a>, or here <a href="https://kozysa.me">https://kozysa.me</a>, would be great to see how you'd use it!</p>
+      
+      <p>This website has been built with vue &amp; nuxt.js., 
+        source <a href="https://github.com/tomekkozysa/svg-spinner">@github</a></p>
+      
+    </div>
     
     <textarea class="code" ref="csscode">background: var(--svgicon);
 --svgicon: url('{{svgcode}}');
@@ -62,11 +75,13 @@ export default {
 
   filters: {
     num: function (value) {
-      if(value < 1 ){
-      return parseFloat(value).toFixed(2)  
+      if(value % 1 !== 0){
+        return parseFloat(value).toFixed(2);  
       }
-      console.log('num::',value)
-      return parseInt(value);
+      else{
+
+        return parseInt(value);
+      }
     },
       bytes:function(val){
         // https://stackoverflow.com/questions/2219526/how-many-bytes-in-a-javascript-string
@@ -82,7 +97,7 @@ export default {
       radius:9,
       r:3,
       thickness:2,
-      time:.25,
+      time:2.25,
       dotspeed:.25,
       svgcode:'',
       images:'',
@@ -92,28 +107,34 @@ export default {
   mounted:function(){
     this.updatePreview();
   },
-  watch:{
-    // count:function(){ this.updatePreview(); console.log('count')},
-    radius:function(){ this.updatePreview();},
-    r:function(){ this.updatePreview();},
-  },
   computed:{},
   methods:{
-    lucky:function(){
-      
-        this.count = 1+Math.random()*23;
-        this.radius = Math.random()*48 - Math.random()*48;
-        this.r = Math.random()*36;
-        this.thickness = Math.random()*25;
-        this.time = Math.random()*1 + Math.random()*5;
-        this.dotspeed = Math.random()*10/10;
+    toNumber: function (value) {
+      if(value % 1 !== 0){
+        // console.log('toNumber:float',value)
+        return parseFloat(value).toFixed(2);  
+      }
+      else{
+        // console.log('toNumber:int',value)
+        return parseInt(value);
+      }
     },
+    // lucky:function(){
+      
+    //     this.count = 1+Math.random()*23;
+    //     this.radius = Math.random()*48 - Math.random()*48;
+    //     this.r = Math.random()*36;
+    //     this.thickness = Math.random()*25;
+    //     this.time = Math.random()*1 + Math.random()*5;
+    //     this.dotspeed = Math.random()*10/10;
+       
+    // },
     updateHandler(value,type){
-      this[type] = value;
+      this[type] = this.toNumber(value);
       this.updatePreview();
     },
     updateSpeed(value,type){
-      this.time = value;
+      this.time = this.toNumber(value);
       this.updatePreview();
     },
     updatePreview:function(){
@@ -124,8 +145,8 @@ export default {
     },
     copyCSS:function(){
       const el = this.$refs.csscode;
-  el.select();
-  document.execCommand('copy');
+      el.select();
+      document.execCommand('copy');
     }
   }
   
@@ -136,12 +157,10 @@ export default {
 <style>
 :root {
   --d-preview-bgr:'';
-  /* //url('data:image/svg+xml;utf-8,<svg width="200px" height="200px" id="projector" xmlns="http://www.w3.org/2000/svg"><g><circle cx="100" cy="81" r="4" fill="rgba(255,0,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0s"></animate></circle><circle cx="106" cy="82" r="4" fill="rgba(0,255,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.1111111111111111s"></animate></circle><circle cx="112" cy="85" r="4" fill="rgba(0,0,255,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.2222222222222222s"></animate></circle><circle cx="116" cy="90" r="4" fill="rgba(255,0,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.3333333333333333s"></animate></circle><circle cx="118" cy="96" r="4" fill="rgba(0,255,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.4444444444444444s"></animate></circle><circle cx="118" cy="103" r="4" fill="rgba(0,0,255,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.5555555555555556s"></animate></circle><circle cx="116" cy="109" r="4" fill="rgba(255,0,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.6666666666666666s"></animate></circle><circle cx="112" cy="114" r="4" fill="rgba(0,255,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.7777777777777777s"></animate></circle><circle cx="106" cy="117" r="4" fill="rgba(0,0,255,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="0.8888888888888888s"></animate></circle><circle cx="100" cy="119" r="4" fill="rgba(255,0,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1s"></animate></circle><circle cx="93" cy="117" r="4" fill="rgba(0,255,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.1111111111111112s"></animate></circle><circle cx="87" cy="114" r="4" fill="rgba(0,0,255,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.222222222222222s"></animate></circle><circle cx="83" cy="109" r="4" fill="rgba(255,0,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.3333333333333333s"></animate></circle><circle cx="81" cy="103" r="4" fill="rgba(0,255,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.4444444444444444s"></animate></circle><circle cx="81" cy="96" r="4" fill="rgba(0,0,255,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.5555555555555554s"></animate></circle><circle cx="83" cy="90" r="4" fill="rgba(255,0,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.6666666666666665s"></animate></circle><circle cx="87" cy="85" r="4" fill="rgba(0,255,0,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.7777777777777777s"></animate></circle><circle cx="93" cy="82" r="4" fill="rgba(0,0,255,1)"><animate dur="2s" repeatCount="indefinite" attributeName="fill" values="rgba(255,0,0,1);rgba(0,255,0,1);rgba(0,0,255,1)" calcMode="splines" begin="1.8888888888888888s"></animate></circle></g></svg>'); */
-  /* --d-ico-closex:url('data:image/svg+xml;utf8,<svg width="50px" height="50px" xmlns="http://www.w3.org/2000/svg"><g><g transform="scale(.5, 25, 25)"><line x1="0" y1="0" x2="50" y2="50" stroke="black" stroke-width="1" /><line x1="0" y1="50" x2="50" y2="0" stroke="black" stroke-width="1" /></g></g></svg>'); */
-  /* --d-ico-closex:url('data:image/svg+xml;utf8,<svg width="200px" height="200px" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="91" r="3" fill="red" /></svg>'); */
+   --c-body-bgr:#f5f4e9;
 }
 body{
-  background:  #f5f4e9;
+  background: var(--c-body-bgr);
 }
 
 
@@ -153,8 +172,14 @@ body{
  /* --svgicon:''; */
   background: var(--d-preview-bgr);
 }
+.image-preview{
+  margin:0 auto;
+  width:200px;
+  display:block;
+}
 .svg-bytes-value{
   margin-top:20px;
+  text-align: center;
 }
 .code{
   font-size:11px;
@@ -176,14 +201,37 @@ body{
   background: transparent;
   /* display: none; */
 }
+.about-the-project{
+  width:80%;
+  max-width: 800px;
+  margin:4em auto;
+  padding-top:1em;
+  border-top:4px solid black;
+  line-height: 1.4em;
+}
+
+.about-the-project a{
+  background:white;
+  /* border-bottom:2px solid black; */
+text-decoration: none;
+color:#333;
+}
+
 .ui{
+
+  background: var(--c-body-bgr);
+
   margin:0 auto;
-  width:220px;
+  width:280px;
+   padding:40px;
+   color:#333;
+   
+  
 }
 
 .ui-bar{
   margin-top:20px;
-  /* padding:10px; */
+ 
   transition: background .3s;
 }
 /* .ui-bar:hover{
@@ -192,6 +240,7 @@ body{
 
 .ui-secondary{
   margin-top:4em;
+  text-align: center;
   
 }
 .projector{
@@ -216,7 +265,7 @@ input[type="range"]{
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  /* text-align: center; */
    font-family: -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   display: block;
@@ -228,21 +277,27 @@ input[type="range"]{
 }
 
 .action-default{
-  background:transparent;
+  background:var(--c-body-bgr);
   /* border:1px; */
   border-radius:0;
   outline:none;
-  border:1px solid black;
+  border:1px solid #999;
   font-size:16px;
   padding:.5em 1em;
   cursor:pointer;
-/* transition: background .3s; */
+transition: background .3s;
 /* background: transparent var(--d-preview-bgr) no-repeat center; */
 }
-.action-default:hover{
+.action-default:not(.hold):hover{
    /* background: white; */
-   background:var(--d-preview-bgr) no-repeat center;
-   background-size:100px;
-   color:rgba(0,0,0,0)
+   /* background:var(--d-preview-bgr) no-repeat center; */
+   /* background-size:100px; */
+   /* color:rgba(0,0,0,0) */
+   background:white;
+
+}
+.action-default.hold{
+
+   background:white;
 }
 </style>
