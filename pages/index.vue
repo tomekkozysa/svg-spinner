@@ -36,9 +36,11 @@
           <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="2" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
           <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="2.25" label="Transition Time " @update="updateSpeed" class="ui-bar" />
         </div>
-        <div class="ui-secondary">
-          <button @click="copyCSS" class="action-default">Copy CSS</button>
-          <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default" :class="{hold:fullscreenmode}">Hit me!</button>
+
+        <div class="ui-secondary ui-buttons">
+          <button @click="copyCSS" class="action-default  ui-button">Copy CSS code</button>
+          <button @click="exportAsSVG" class="action-default  ui-button" >Download SVG</button>
+          <button @click="(e)=>fullscreenmode=!fullscreenmode" class="action-default  ui-button" :class="{hold:fullscreenmode}">Hit me!</button>
           <!-- <button @click="lucky" class="action-default">Feeling lucky!</button> -->
         </div>
       </div>
@@ -52,11 +54,15 @@
       
       <p>This website has been built with vue &amp; nuxt.js., 
         source <a href="https://github.com/tomekkozysa/svg-spinner">@github</a></p>
+      <p>
+        https://developer.mozilla.org/en-US/docs/Web/SVG/SVG_animation_with_SMIL
+        <quote>Although Chrome 45 deprecated SMIL in favor of CSS animations and Web animations, the Chrome developers have since suspended that deprecation.</quote>
+        </p>      
       
     </div>
     
     <textarea class="code" ref="csscode">background: var(--svgicon);
---svgicon: url('{{svgcode}}');
+      --svgicon: url('{{svgcode}}');
     </textarea>
 
     </div>
@@ -109,6 +115,29 @@ export default {
   },
   computed:{},
   methods:{
+
+
+    triggerDownload : function (imgURI,name) {
+        var evt = new MouseEvent('click', {
+            view: window,
+            bubbles: false,
+            cancelable: true
+        });
+        var a = document.createElement('a');
+        a.setAttribute('download', name);
+        a.setAttribute('href', imgURI);
+        a.setAttribute('target', '_blank');
+        a.dispatchEvent(evt);
+
+    },    
+    exportAsSVG :  function () {
+      
+      var url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(this.$refs.projector.svg());
+      this.triggerDownload(url,'rainbow-spinner-'+Math.random()*10000+'.svg');
+
+    },
+
+
     toNumber: function (value) {
       if(value % 1 !== 0){
         // console.log('toNumber:float',value)
@@ -222,22 +251,33 @@ color:#333;
   background: var(--c-body-bgr);
 
   margin:0 auto;
-  width:280px;
-   padding:40px;
-   color:#333;
-   
+  color:#333;
+  display: flex;
+  align-items: center;
+  flex-direction:column;
+  
   
 }
 
 .ui-bar{
-  margin-top:20px;
- 
+  margin-top:20px; 
   transition: background .3s;
+}
+.ui-buttons{
+  display: flex;
+  flex-direction: row;
+}
+.ui-button{
+  margin:0 .25em;
 }
 /* .ui-bar:hover{
   background:#eee;
 } */
-
+ui-primary{
+  width:280px;
+  padding:40px;
+  
+}
 .ui-secondary{
   margin-top:4em;
   text-align: center;
@@ -254,10 +294,8 @@ color:#333;
   width:200px;
   height:200px;
 }
-input[type="range"]{
-  width:450px;
 
-}
+
 .container {
   /* background:black; */
   margin: 0 auto;
@@ -278,11 +316,11 @@ input[type="range"]{
 
 .action-default{
   background:var(--c-body-bgr);
-  /* border:1px; */
-  border-radius:0;
+  
+  border-radius:2px;
   outline:none;
   border:1px solid #999;
-  font-size:16px;
+  font-size:14px;
   padding:.5em 1em;
   cursor:pointer;
 transition: background .3s;
