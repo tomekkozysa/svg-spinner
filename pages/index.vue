@@ -48,7 +48,7 @@
     </div>
 
     <div class="about-the-project">
-      <p>Rainbow Spinner, is a side project that explores SVG as a self contained animation format. /p>
+      <p>Rainbow Spinner, is a side project that explores SVG as a self contained animation format. </p>
       <p>SMIL, animation markup for SVG allows easy access to animation parameters for customisation, while a CSS variable is an easy copy&amp;paste way to add a spinner to your project. What you get is an animted SVG, wrapped in a CSS variable. You can also download the animated SVG file.</p>      
       
       <p class="atp-sidenote">This website has been built with vue.js &amp; nuxt.js, 
