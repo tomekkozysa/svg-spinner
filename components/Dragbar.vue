@@ -188,6 +188,7 @@ export default {
     text-align:left;
     position: relative;    
     cursor:ew-resize;
+    padding:10px 0;
 }
 .dragbar:hover{
     --tb-dot-size:9px;

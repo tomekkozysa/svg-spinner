@@ -48,19 +48,23 @@
     </div>
 
     <div class="about-the-project">
-      <p>Rainbow Spinner, is a side project that explores SVG as a self contained animation format. </p>
-      <p>As SVG allows easy access to animation parameters for customisation, a CSS variable is an easy copy&amp;paste way to add a spinner to your project.</p>      
-      <p>You can find me on <a href="https://twitter.com/tokya">twitter</a>, or here <a href="https://kozysa.me">https://kozysa.me</a>, would be great to see how you'd use it!</p>
+      <p>Rainbow Spinner, is a side project that explores SVG as a self contained animation format. /p>
+      <p>SMIL, animation markup for SVG allows easy access to animation parameters for customisation, while a CSS variable is an easy copy&amp;paste way to add a spinner to your project. What you get is an animted SVG, wrapped in a CSS variable. You can also download the animated SVG file.</p>      
       
-      <p>This website has been built with vue &amp; nuxt.js., 
-        source <a href="https://github.com/tomekkozysa/svg-spinner">@github</a></p>
+      <p class="atp-sidenote">This website has been built with vue.js &amp; nuxt.js, 
+        source code at <a href="https://github.com/tomekkozysa/svg-spinner">@github</a></p>
+
+        <p>You can find me on <a href="https://twitter.com/tokya">twitter</a>, or here <a href="https://kozysa.me">https://kozysa.me</a>, would be great to find out how it's beeing used!</p>
+      
       <!-- <p>
         https://developer.mozilla.org/en-US/docs/Web/SVG/SVG_animation_with_SMIL
         <quote>Although Chrome 45 deprecated SMIL in favor of CSS animations and Web animations, the Chrome developers have since suspended that deprecation.</quote>
         </p>       -->
       
     </div>
-    
+    <!-- it can very long, has to remain visible for copy to clipboard to work but it's hidden with CSS 
+    -->
+
     <textarea class="code" ref="csscode">background: var(--svgicon);
       --svgicon: url('{{svgcode}}');
     </textarea>
@@ -148,7 +152,11 @@ export default {
         return parseInt(value);
       }
     },
+
+    // this function Lucky was meant to generate random values, it createved several problems, hence suspension
+
     // lucky:function(){
+
       
     //     this.count = 1+Math.random()*23;
     //     this.radius = Math.random()*48 - Math.random()*48;
@@ -198,11 +206,28 @@ body{
   opacity: 0;
 }
 .container.fullscreenmode{
- /* --svgicon:''; */
   background: var(--d-preview-bgr);
 }
+
+.container {
+  
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   font-family: -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: block;
+  font-weight: 300;
+  font-size: 20px;
+  color:#444;
+  letter-spacing: 1px;
+}
+
+
 .image-preview{
-  margin:0 auto;
+  margin:2em auto 0;
   width:200px;
   display:block;
 }
@@ -214,13 +239,9 @@ body{
   font-size:11px;
   opacity: .8;
   font-family:monospace;
-  /* white-space: nowrap; */
-  /* padding:20px; */
-  /* max-width:300px; */
   margin:4em auto;
   height:0;overflow:hidden;opacity:0;
   width:90%;
-  /* height:300px; */
   overflow: hidden;
 
   display: block;
@@ -228,39 +249,48 @@ body{
   border:0px;
   padding:1em;
   background: transparent;
-  /* display: none; */
+  
 }
 .about-the-project{
   width:80%;
   max-width: 800px;
-  margin:4em auto;
+  margin:2em auto;
   padding-top:1em;
   border-top:4px solid black;
   line-height: 1.4em;
 }
 
-.about-the-project a{
-  background:white;
-  /* border-bottom:2px solid black; */
-text-decoration: none;
-color:#333;
+.about-the-project p{
+  margin:1em auto 0;
 }
 
-.ui{
+.about-the-project a{
+  background:white;
+  text-decoration: none;
+  color:#333;
+  display:inline-block;
+  padding:0 .2em;
+}
+.about-the-project a:hover{
+  text-decoration: underline;
+  background: transparent;
+}
 
-  
+p.atp-sidenote{
+  border-top:1px solid black;
+  padding:2em 0 0;
+}
+.ui{
 
   margin:0 auto;
   color:#333;
   display: flex;
   align-items: center;
   flex-direction:column;
-  
-  
+   
 }
 
 .ui-bar{
-  margin-top:20px; 
   transition: background .3s;
 }
 .ui-buttons{
@@ -270,9 +300,7 @@ color:#333;
 .ui-button{
   margin:0 .25em;
 }
-/* .ui-bar:hover{
-  background:#eee;
-} */
+
 .ui-primary{
   width:280px;
   padding:40px;
@@ -298,23 +326,7 @@ color:#333;
 }
 
 
-.container {
-  /* background:black; */
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* text-align: center; */
-   font-family: -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 20px;
-  /* color: #35495e; */
-  color:#444;
-  letter-spacing: 1px;
-}
+
 
 .action-default{
   background:var(--c-body-bgr);
@@ -329,15 +341,10 @@ transition: background .3s;
 /* background: transparent var(--d-preview-bgr) no-repeat center; */
 }
 .action-default:not(.hold):hover{
-   /* background: white; */
-   /* background:var(--d-preview-bgr) no-repeat center; */
-   /* background-size:100px; */
-   /* color:rgba(0,0,0,0) */
    background:white;
 
 }
 .action-default.hold{
-
    background:white;
 }
 </style>
