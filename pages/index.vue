@@ -21,7 +21,7 @@
 
     -->
 
-    <img ref="previewImg" :src="svgcode" class="image-preview"/>
+    <!-- <img ref="previewImg" :src="svgcode" class="image-preview"/> -->
 
     <!-- <p>Here's a div with CSS variable used in background</p> -->
     <div class="preview" ref="preview"></div>
@@ -54,10 +54,10 @@
       
       <p>This website has been built with vue &amp; nuxt.js., 
         source <a href="https://github.com/tomekkozysa/svg-spinner">@github</a></p>
-      <p>
+      <!-- <p>
         https://developer.mozilla.org/en-US/docs/Web/SVG/SVG_animation_with_SMIL
         <quote>Although Chrome 45 deprecated SMIL in favor of CSS animations and Web animations, the Chrome developers have since suspended that deprecation.</quote>
-        </p>      
+        </p>       -->
       
     </div>
     
@@ -218,9 +218,9 @@ body{
   /* padding:20px; */
   /* max-width:300px; */
   margin:4em auto;
-  
+  height:0;overflow:hidden;opacity:0;
   width:90%;
-  height:300px;
+  /* height:300px; */
   overflow: hidden;
 
   display: block;
@@ -248,7 +248,7 @@ color:#333;
 
 .ui{
 
-  background: var(--c-body-bgr);
+  
 
   margin:0 auto;
   color:#333;
@@ -276,21 +276,23 @@ color:#333;
 ui-primary{
   width:280px;
   padding:40px;
+  background: var(--c-body-bgr);
   
 }
 .ui-secondary{
-  margin-top:4em;
+  margin-top:2em;
   text-align: center;
-  
+   padding:40px;
+  background: var(--c-body-bgr);
 }
 .projector{
   display:none;
 }
 .preview{
-  display:none;
-  background: rgb(25,25,35) var(--d-preview-bgr);
-  border:1px solid red;
-  margin:3em auto;
+  /* display:none; */
+  background: transparent var(--d-preview-bgr);
+  /* border:1px solid red; */
+  margin:2em auto;
   width:200px;
   height:200px;
 }
