@@ -21,7 +21,7 @@
 
     -->
 
-    <!-- <img ref="previewImg" :src="svgcode" class="image-preview"/> -->
+    <img ref="previewImg" :src="svgcode" class="image-preview"/>
 
     <!-- <p>Here's a div with CSS variable used in background</p> -->
     <div class="preview" ref="preview"></div>
@@ -31,10 +31,10 @@
       <div class="ui">
         <div class="ui-primary">
           <Dragbar :rangeout="{min:1,max:24}" :step="1"  :decimals="0" :default="7" label="Number of elements" @update="updateHandler($event,'count');" class="ui-bar"/>
-          <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="9" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
-          <Dragbar :rangeout="{min:0.1,max:100}" :step=".1" :decimals="0"  :default="3" label="Size" @update="updateHandler($event,'r');" class="ui-bar"/>
-          <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="2" label="Thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
-          <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="2.25" label="Transition Time " @update="updateSpeed" class="ui-bar" />
+          <Dragbar :rangeout="{min:-48,max:48}" :step="1"  :decimals="0" :default="30" label="Radius"  @update="updateHandler($event,'radius');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:0.1,max:100}" :step=".1" :decimals="0"  :default="10" label="Element size" @update="updateHandler($event,'r');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:.5,max:100}" :step=".5" :decimals="1"  :default="8" label="Element thickness" @update="updateHandler($event,'thickness');" class="ui-bar"/>
+          <Dragbar :rangeout="{min:0.1,max:10}" :step=".1" :decimals="2"  :default="5" label="Transition Time " @update="updateSpeed" class="ui-bar" />
         </div>
 
         <div class="ui-secondary ui-buttons">
@@ -100,10 +100,10 @@ export default {
   data(){
     return{
       count:7,
-      radius:9,
-      r:3,
-      thickness:2,
-      time:2.25,
+      radius:30,
+      r:8,
+      thickness:10,
+      time:5,
       dotspeed:.25,
       svgcode:'',
       images:'',
@@ -273,7 +273,7 @@ color:#333;
 /* .ui-bar:hover{
   background:#eee;
 } */
-ui-primary{
+.ui-primary{
   width:280px;
   padding:40px;
   background: var(--c-body-bgr);
@@ -289,7 +289,7 @@ ui-primary{
   display:none;
 }
 .preview{
-  /* display:none; */
+  display:none;
   background: transparent var(--d-preview-bgr);
   /* border:1px solid red; */
   margin:2em auto;
