@@ -195,6 +195,8 @@ export default {
 :root {
   --d-preview-bgr:'';
    --c-body-bgr:#f5f4e9;
+
+   --svgicon-about: url('data:image/svg+xml;utf-8,<svg width="200px" height="200px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"><g><line x1="100.00" y1="81.00" x2="100.00" y2="89.00" stroke-width="10" stroke="violet" stroke-linecap="round"><animate dur="5000ms" repeatCount="indefinite" attributeName="stroke" values="violet;indigo;blue;lightgreen;yellow;darkorange;red" begin="0ms"></animate></line><line x1="116.45" y1="109.50" x2="109.53" y2="105.50" stroke-width="10" stroke="indigo" stroke-linecap="round"><animate dur="5000ms" repeatCount="indefinite" attributeName="stroke" values="violet;indigo;blue;lightgreen;yellow;darkorange;red" begin="1666.6666666666667ms"></animate></line><line x1="83.55" y1="109.50" x2="90.47" y2="105.50" stroke-width="10" stroke="blue" stroke-linecap="round"><animate dur="5000ms" repeatCount="indefinite" attributeName="stroke" values="violet;indigo;blue;lightgreen;yellow;darkorange;red" begin="3333.3333333333335ms"></animate></line></g></svg>');
 }
 body{
   background: var(--c-body-bgr);
@@ -213,6 +215,7 @@ body{
   
   margin: 0 auto;
   min-height: 100vh;
+  padding-top:2em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -227,7 +230,7 @@ body{
 
 
 .image-preview{
-  margin:2em auto 0;
+  margin:0 auto;
   width:200px;
   display:block;
 }
@@ -258,6 +261,11 @@ body{
   padding-top:1em;
   border-top:4px solid black;
   line-height: 1.4em;
+  padding-bottom:100px;
+  background: var(--svgicon-about) no-repeat center 100%;
+  background-size:100px;
+    
+  
 }
 
 .about-the-project p{
