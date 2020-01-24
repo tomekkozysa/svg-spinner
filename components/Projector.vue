@@ -6,7 +6,6 @@
 
         <animate v-if="animate" :dur="time*1000+'ms'" repeatCount="indefinite" attributeName="stroke"
             :values="colorsequence" 
-            calcMode="splines" 
             :begin="time*1000/count*d.id+'ms'" 
         />
      
@@ -42,7 +41,7 @@ export default {
          animate:true,
         //  colors:["#9400D3","#4B0082","#0000FF","#00FF00","#FFFF00","#FF7F00","#FF0000"],
         //  colors: ["#ff0000", "#ff7f00", "#ffff00", "#00ff00", "#0000ff", "#4b0082", "#9400d3"],
-        // colors:["rgba(148, 0, 211,1)","rgba(75, 0, 130,1)","rgba(0, 0, 255,1)","rgba(0, 255, 0,1)","rgba(255, 255, 0,1)","rgba(255, 127,1)","rgba(255, 0 , 0,1)"],
+        // colors:["rgba(148, 0, 211,1)","rgba(75, 0, 130,1)","rgba(0, 0, 255,1)","rgba(0, 255, 0,1)","rgba(255, 255, 0,1)","rgba(255, 127,1)","rgba(255, 0, 0, 1)"],
         colors:["violet","indigo","blue","lightgreen","yellow","darkorange","red"],
         // colors:["black","white"]
         // colors:["black","AQUAMARINE"]
